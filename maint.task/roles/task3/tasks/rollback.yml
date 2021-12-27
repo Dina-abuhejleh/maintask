@@ -1,0 +1,30 @@
+---
+
+
+- hosts: localhost
+  tasks:
+    - name: Import Files
+      include_vars:
+        file: ./vars.yml
+        name: filesp
+
+
+
+    - name: Check if files exists in backup
+      become: true
+      register: files_exist
+      stat:
+        path: /root/maint.task/task3/backup/{{ item }}
+      loop:
+        - "{{ (filesp | dict2items)[1].value }}" 
+        - "{{ (filesp | dict2items)[2].value }}"
+
+
+
+    - name: Revert files from backup
+      become: true
+      copy:
+        src: '{{ item.stat.path }}'
+        dest: /root/{{ item.item }}
+      with_items: '{{ files_exist.results }}'
+      when: item.stat.exists

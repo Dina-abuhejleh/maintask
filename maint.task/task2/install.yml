@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Include task1 roles
+      include_role:
+        name: /root/maint.task/roles/task1
+      

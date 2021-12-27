@@ -1,0 +1,29 @@
+
+---
+
+- name: Create directory on all client nodes
+  file:
+    path: /root/TASK1
+    state: directory
+  delegate_to: worker-node
+  
+    
+- name: Copy the file to all client nodes
+  copy:
+   src: /root/{{ file1 }}
+   dest: /root/TASK1/
+   mode: '0644'
+  delegate_to: worker-node
+     
+- name: Change the value of processes
+  replace:
+    path: /root/TASK1/{{ file1 }} 
+    after: "processes="  
+    before: " "
+    regexp: '^(.+)$'
+    replace: '2'
+  delegate_to: worker-node
+  
+
+
+

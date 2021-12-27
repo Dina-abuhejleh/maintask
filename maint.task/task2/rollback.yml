@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Change the value of processes
+      replace:
+        path: /root/TASK1/10-barbican_wsgi_main.conf
+        after: "processes="
+        before: " "
+        regexp: '^(.+)$'
+        replace: '80'
+      delegate_to: worker-node
+
+    - name: Delete copied file
+      file:
+        state: absent
+        path: /root/TASK1/10-barbican_wsgi_main.conf
+      delegate_to: worker-node

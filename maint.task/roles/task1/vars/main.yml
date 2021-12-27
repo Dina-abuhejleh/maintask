@@ -1,0 +1,8 @@
+---
+# vars file for /root/maint.task/roles/task1
+
+
+file1: 10-barbican_wsgi_main.conf
+file2: post-install.yml
+file3: user_config.yml
+

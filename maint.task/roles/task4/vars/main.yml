@@ -1,0 +1,4 @@
+---
+"file1" : { "src": "/root/post-install.yml" , "dest": "/root/directory_1/", "mode":"755" }
+"file2" : { "src": "/root/user_config.yaml"  , "dest": "/root/directory_2/" , "mode":"777" }
+"file3" : { "src": "/root/text_3.txt", "dest": "/root/directory_3/", "mode":"775" }

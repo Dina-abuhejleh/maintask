@@ -1,0 +1,41 @@
+---
+  - name: Creating directories 
+    file:
+      path: /root/{{ item.directory }}/
+      state: directory
+    loop:
+      - { directory: directory_1 }
+      - { directory: directory_2 }
+      - { directory: directory_3 }
+
+  - name: Copying files 
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: "{{ item.mode }}"
+    with_items:
+      - "{{ file1 }}"
+      - "{{ file2 }}"
+      - "{{ file3 }}"
+
+
+  - name: Check existing of files
+    stat:
+      path: "{{ item.path }}/{{ item.file }}"
+    loop:
+      - { "path": "/root/directory_1/" , "file": "post-install.yml" }
+      - { "path": "/root/directory_2/" , "file": "user_config.yaml" }
+      - { "path": "/root/directory_3/" , "file": "text_3.txt" }
+      - { "path": "/root/directory_3/" , "file": "text_4.txt" }
+
+    register: stat_result
+    
+
+  - name: Clear contetnt of files
+    become: true
+    shell: |
+      > {{ item.stat.path }}
+    with_items: '{{ stat_result.results }}'
+    when: item.stat.exists
+  
+

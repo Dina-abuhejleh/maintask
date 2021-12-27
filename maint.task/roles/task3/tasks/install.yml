@@ -1,0 +1,33 @@
+---
+ 
+
+    - name: Copy files to backup path
+      copy:
+        src: /root/{{ item }}
+        dest: /root/maint.task/roles/task3/backup/
+      loop:
+      - "{{ file2 }}" 
+      - "{{ file3 }}"
+      
+
+    - name: Add block to attached file post-install.yml
+      blockinfile:
+        path: /root/{{ file2 }}
+        insertbefore: "# Configure Novl , - do not place any includes below here."
+        block: |
+          - import_playbook: disable-gnocchi-aodh-and-ceilometer.yml
+            tags: [update,scale-out]
+      
+   
+
+    - name: Add IPs to a field 
+      lineinfile:
+        path: /root/{{ file3 }}
+        regexp: '(external_storage_iscsi_ip[\S\s*]*:)(.*)'
+        backrefs: yes
+        line: '    \1 \n    - {{ item }}'
+      loop:
+       -  10.94.195.20
+       -  10.94.195.30
+
+   
